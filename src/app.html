@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" href="/images/favicon.png" />
+		<link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+		<!-- Enables scroll-reveal hidden states only when JS runs, so no-JS visitors still see everything. -->
+		<script>document.documentElement.classList.add('js');</script>
+		<!-- Restore the visitor's light/dark choice (Nav toggle) before paint. No choice = follow the OS. -->
+		<script>
+			try {
+				const t = localStorage.getItem('theme');
+				if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+			} catch {}
+		</script>
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>

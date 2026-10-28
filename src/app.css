@@ -1,0 +1,192 @@
+/* Design tokens + element defaults. Everything else lives in component <style> blocks. */
+
+:root {
+	--cream: #fbf9f8;
+	--sand: #fcf1db;
+	--ink: #000;
+	--brown: #4d2c1f;
+	--green: #294123;
+	--green-deep: #193412;
+	--green-dark: #202b1d;
+	--gray: #333;
+
+	/* Themed tokens: light-dark(light, dark). The fixed colours above stay the same in both themes
+	   (green footer, form panels, banner). The theme follows the OS unless the toggle in Nav set
+	   data-theme on <html> (restored before paint in app.html). */
+	color-scheme: light dark;
+	--bg: light-dark(#fbf9f8, #161914);
+	--surface: light-dark(#fbf9f8, #1f231d); /* cards */
+	--surface-2: light-dark(#efebe7, #2a2f27); /* card chrome, process dot */
+	--text: light-dark(#000, #f1ede6);
+	--text-soft: light-dark(rgb(0 0 0 / 0.7), rgb(241 237 230 / 0.72));
+	--leaf: light-dark(#2a4224, #a8c899); /* h3 and accent text */
+	--link: light-dark(#4d2c1f, #e3bf95);
+	--btn-bg: light-dark(#4d2c1f, #fcf1db);
+	--btn-text: light-dark(#fbf9f8, #193412);
+	--shadow: light-dark(rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.7));
+	--black: light-dark(#141414, #0b0c0a); /* dark sections stay darker than the page */
+	/* Black line-art images (service icons, process steps): inverted in dark mode, and screen-blended
+	   so any white box behind them disappears. light-dark() only takes colours, hence the blocks below. */
+	--art-filter: none;
+	--art-blend: normal;
+
+	--gutter: 8rem;
+	--quart: cubic-bezier(0.25, 1, 0.5, 1);
+	--quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root[data-theme='light'] {
+	color-scheme: light;
+}
+:root[data-theme='dark'] {
+	color-scheme: dark;
+	--art-filter: invert(1) hue-rotate(180deg);
+	--art-blend: screen;
+}
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--art-filter: invert(1) hue-rotate(180deg);
+		--art-blend: screen;
+	}
+}
+
+@media (max-width: 991px) {
+	:root {
+		--gutter: 9vw;
+	}
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--text);
+	transition:
+		background-color 300ms ease,
+		color 300ms ease;
+	font: 400 18px/1.2 'Work Sans Variable', 'Work Sans', sans-serif;
+}
+
+img {
+	display: block;
+	max-width: 100%;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+	transition: opacity 200ms ease;
+}
+
+button,
+input,
+textarea {
+	font: inherit;
+	color: inherit;
+}
+
+h1,
+h2 {
+	margin: 0 0 1.5rem;
+	font-weight: 500;
+	letter-spacing: -1px;
+}
+
+h1 {
+	margin-top: 20px;
+	font-size: 64px;
+	line-height: 1.1;
+}
+
+h2 {
+	font-size: 48px;
+	line-height: 1.2;
+}
+
+h3 {
+	margin: 10px 0 1.5rem;
+	color: var(--leaf);
+	font-size: 24px;
+	font-weight: 500;
+	line-height: 1;
+}
+
+p {
+	margin: 0 0 1.5rem;
+	opacity: 0.7;
+	font-size: 18px;
+	line-height: 1.5;
+	letter-spacing: -1px;
+}
+
+@media (max-width: 991px) {
+	h1,
+	h2 {
+		font-size: 56px;
+	}
+	p {
+		font-size: 16px;
+	}
+}
+
+@media (max-width: 767px) {
+	h1 {
+		margin-bottom: 1rem;
+		font-size: 48px;
+		letter-spacing: -2px;
+	}
+	h2 {
+		margin-bottom: 1rem;
+		font-size: 36px;
+	}
+	h3 {
+		margin: 0 0 1rem;
+	}
+	p {
+		margin-bottom: 1rem;
+	}
+}
+
+@media (max-width: 479px) {
+	h1 {
+		font-size: 36px;
+	}
+	h3 {
+		letter-spacing: -1px;
+	}
+}
+
+/* Scroll reveal — replaces Webflow IX2. Markup: data-reveal="shrink|fade|left|down" + optional style="--delay: 400ms".
+   Observed in src/lib/reveal.js. */
+.js [data-reveal] {
+	opacity: 0;
+	transition:
+		opacity 1s var(--quart) var(--delay, 0ms),
+		transform 1s var(--quart) var(--delay, 0ms);
+}
+.js [data-reveal='shrink'] {
+	transform: scale(1.25);
+}
+.js [data-reveal='left'] {
+	transform: translateX(-100px);
+}
+.js [data-reveal='down'] {
+	transform: translateY(-100px);
+}
+.js [data-reveal][data-shown] {
+	opacity: 1;
+	transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.js [data-reveal] {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+}
